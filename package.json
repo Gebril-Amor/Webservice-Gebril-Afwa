@@ -1,0 +1,23 @@
+{
+  "name": "coworking-reservation-system",
+  "version": "1.0.0",
+  "description": "A GraphQL-based reservation system for coworking spaces",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": ["coworking", "reservation", "graphql"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "apollo-server": "^3.13.0",
+    "graphql": "^16.11.0",
+    "uuid": "^11.1.0",
+    "date-fns": "^2.30.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+} 
