@@ -37,4 +37,4 @@ const spaceResolvers = {
   }
 };
 
-module.exports = spaceResolvers; 
+module.exports = { ...spaceResolvers, spaces }; 

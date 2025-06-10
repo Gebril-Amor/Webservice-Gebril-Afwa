@@ -23,4 +23,4 @@ const userResolvers = {
   }
 };
 
-module.exports = userResolvers; 
+module.exports = { ...userResolvers, users }; 

@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const Reservation = require('../models/Reservation');
 
-// Import data stores from other resolvers
+// Import data stores
 const spaces = require('./spaceResolvers').spaces;
 const users = require('./userResolvers').users;
 
@@ -16,15 +16,25 @@ const reservationResolvers = {
 
   Mutation: {
     createReservation: (_, { spaceId, userId, startTime, endTime }) => {
+      // Validate space exists
       const space = spaces.find(s => s.id === spaceId);
+      if (!space) {
+        throw new Error(`Space with ID ${spaceId} not found`);
+      }
+
+      // Validate user exists
       const user = users.find(u => u.id === userId);
-      
-      if (!space || !user) {
-        throw new Error('Space or user not found');
+      if (!user) {
+        throw new Error(`User with ID ${userId} not found`);
       }
 
       const start = new Date(startTime);
       const end = new Date(endTime);
+
+      // Validate time slot
+      if (start >= end) {
+        throw new Error('End time must be after start time');
+      }
 
       // Check for conflicts
       const hasConflict = space.reservations.some(res => 
@@ -54,7 +64,7 @@ const reservationResolvers = {
     cancelReservation: (_, { id }) => {
       const reservation = reservations.find(res => res.id === id);
       if (!reservation) {
-        throw new Error('Reservation not found');
+        throw new Error(`Reservation with ID ${id} not found`);
       }
       reservation.updateStatus('CANCELLED');
       return reservation;
@@ -63,7 +73,7 @@ const reservationResolvers = {
     updateReservationStatus: (_, { id, status }) => {
       const reservation = reservations.find(res => res.id === id);
       if (!reservation) {
-        throw new Error('Reservation not found');
+        throw new Error(`Reservation with ID ${id} not found`);
       }
       reservation.updateStatus(status);
       return reservation;
