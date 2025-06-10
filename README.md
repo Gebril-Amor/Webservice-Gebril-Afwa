@@ -18,6 +18,57 @@ A GraphQL-based web service for managing coworking space reservations. This syst
 - GraphQL
 - In-memory data storage (can be extended to use a database)
 
+## Class Diagram
+
+```mermaid
+classDiagram
+    class Space {
+        +String id
+        +String name
+        +SpaceType type
+        +Number capacity
+        +Number pricePerHour
+        +Boolean isAvailable()
+    }
+
+    class User {
+        +String id
+        +String name
+        +String email
+        +getReservations()
+    }
+
+    class Reservation {
+        +String id
+        +String spaceId
+        +String userId
+        +DateTime startTime
+        +DateTime endTime
+        +ReservationStatus status
+        +Number totalPrice
+        +calculateTotalPrice()
+    }
+
+    class SpaceType {
+        <<enumeration>>
+        DESK
+        MEETING_ROOM
+        PRIVATE_OFFICE
+    }
+
+    class ReservationStatus {
+        <<enumeration>>
+        PENDING
+        CONFIRMED
+        CANCELLED
+    }
+
+    Space "1" -- "0..*" Reservation : has
+    User "1" -- "0..*" Reservation : makes
+    Space -- SpaceType : has
+    Reservation -- ReservationStatus : has
+```
+
 ## Getting Started
 
 1. Install dependencies:
@@ -25,9 +76,9 @@ A GraphQL-based web service for managing coworking space reservations. This syst
 npm install
 ```
 
-2. Start the development server:
+2. Test:
 ```bash
-npm run dev
+node src/index.js
 ```
 
 The server will start at http://localhost:4000
